@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio2</title>
+</head>
+<body>
+    <script>
+        /*Crea un script que pida al usuario un número
+         y muestre en la página un párrafo indicando si el número introducido es par o impar. */
+
+        let numero = prompt("Dime un numero:")
+
+        if(Number.isInteger(parseInt(numero,10))){
+            if (numero%2!=0){
+                document.write("El numero es impar")
+            }else document.write("El numero es par")
+        }else alert("Lo introducido no es un numero.")
+        
+    </script>
+    
+</body>
+</html>
