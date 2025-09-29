@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ejercicio 20 - Juego de Adivinar</title>
+</head>
+<body>
+  <h2>Ejercicio 21: Adivina el número</h2>
+  <button onclick="jugar()">Click me</button>
+
+  <div id="resultado"></div>
+
+  <script>
+    function jugar() {
+      // Pedimos los dos números y validamos que sean enteros
+      let num1, num2;
+      do {
+        num1 = parseInt(prompt("Introduce el primer número (entero):"));
+      } while (isNaN(num1));
+
+      do {
+        num2 = parseInt(prompt("Introduce el segundo número (entero):"));
+      } while (isNaN(num2));
+
+      // Calculamos el mínimo y máximo (aunque el usuario los dé desordenados)
+      let min = Math.min(num1, num2);
+      let max = Math.max(num1, num2);
+
+      // Generamos el número secreto aleatorio
+      let secreto = Math.floor(Math.random() * (max - min + 1)) + min;
+
+      // Pedimos el nivel de dificultad
+      let dificultad;
+      do {
+        dificultad = prompt("Elige dificultad: Fácil, Normal o Difícil").toLowerCase();
+      } while (dificultad !== "fácil" && dificultad !== "facil" &&
+               dificultad !== "normal" &&
+               dificultad !== "difícil" && dificultad !== "dificil");
+
+      let rango = max - min + 1;
+      let intentos;
+
+      // Definimos los intentos según dificultad
+      if (dificultad === "fácil" || dificultad === "facil") {
+        intentos = Math.floor(rango / 2);
+      } else if (dificultad === "normal") {
+        intentos = Math.floor(rango / 4);
+      } else {
+        intentos = Math.floor(rango / 8);
+      }
+
+      if (intentos < 1) intentos = 1; // aseguramos al menos 1 intento
+
+      let acierto = false;
+      let usado = 0;
+
+      // Bucle de intentos
+      for (let i = 1; i <= intentos; i++) {
+        let guess = parseInt(prompt("Intento " + i + " de " + intentos +
+                                    ". Adivina el número entre " + min + " y " + max));
+        usado++;
+
+        if (guess === secreto) {
+          acierto = true;
+          let nombre = prompt("¡Felicidades! Has acertado en " + usado + " intentos. Escribe tu nombre:");
+          document.getElementById("resultado").innerHTML =
+            "<h3>Resultado</h3>" +
+            "<p>Jugador: " + nombre + "</p>" +
+            "<p>Dificultad: " + dificultad + "</p>" +
+            "<p>Número secreto: " + secreto + "</p>" +
+            "<p>Intentos utilizados: " + usado + "</p>";
+          break;
+        } else {
+          if (dificultad === "fácil" || dificultad === "facil" || dificultad === "normal") {
+            if (guess < secreto) {
+              alert("Fallaste. El número es MAYOR.");
+            } else {
+              alert("Fallaste. El número es MENOR.");
+            }
+          } else {
+            alert("Fallaste.");
+          }
+        }
+      }
+
+      if (!acierto) {
+        alert("Se te acabaron los intentos. El número era " + secreto);
+      }
+
+      // Preguntar si quiere jugar otra vez
+      let jugarDeNuevo = confirm("¿Quieres jugar otra vez?");
+      if (jugarDeNuevo) {
+        jugar(); // vuelve a empezar sin recargar la página
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ejercicio 16 - Horario</title>
+  <style>
+    table { border-collapse: collapse; margin: 20px auto; }
+    th, td { border: 1px solid #333; padding: 10px; text-align: center; min-width: 90px; }
+    th { background-color: #eee; }
+    .recreo { background-color: #f9dada; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>Ejercicio 16: Horario semanal</h2>
+  <div id="horario"></div>
+
+  <script>
+    // 6 clases + 1 recreo (fila 4)
+    const horario = [
+      ["IPPE", "PROY", "IPPE", "AD", "SGE"],
+      ["DI", "SGE", "AD", "AD", "SGE"],
+      ["DI", "SGE", "AD", "AD", "SASP"],
+      ["RECREO","RECREO","RECREO","RECREO","RECREO"], // 15 min
+      ["DWC", "PMDM", "PMDM", "PROY", "DI"],
+      ["DWC", "PMDM", "PMDM", "PSP", "DI"],
+      ["DWC", "PMDM", "PMDM", "PSP", "DI"]
+    ];
+
+    // Configuración de tiempos
+    const horaInicio = 15, minutosInicio = 45;
+    const DUR_CLASE = 50;     // minutos
+    const DUR_RECREO = 15;    // minutos
+    const DESCANSO_NORMAL = 5;// minutos (entre clases, salvo antes/después de recreo)
+
+    // Fechas (cabecera lunes-viernes de la semana actual)
+    const hoy = new Date();
+    const diaSemana = hoy.getDay(); // 0=dom
+    const lunes = new Date(hoy);
+    lunes.setDate(hoy.getDate() - (diaSemana === 0 ? 6 : diaSemana - 1));
+    const diasSemana = Array.from({length: 5}, (_, i) => {
+      const d = new Date(lunes);
+      d.setDate(lunes.getDate() + i);
+      return d;
+    });
+
+    // Construcción tabla
+    let html = "<table>";
+    html += "<tr><th>Hora</th>";
+    for (const d of diasSemana) {
+      html += "<th>" + d.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short' }) + "</th>";
+    }
+    html += "</tr>";
+
+    // Hora de trabajo
+    let cursor = new Date();
+    cursor.setHours(horaInicio, minutosInicio, 0, 0);
+
+    for (let i = 0; i < horario.length; i++) {
+      const esRecreo = (horario[i][0] === "RECREO");
+
+      // Duración del tramo actual: 50 min si clase, 15 min si recreo
+      const duracionMin = esRecreo ? DUR_RECREO : DUR_CLASE;
+
+      // Calculamos fin del tramo actual
+      const fin = new Date(cursor);
+      fin.setMinutes(fin.getMinutes() + duracionMin);
+
+      const fmt = t => String(t.getHours()).padStart(2,"0") + ":" + String(t.getMinutes()).padStart(2,"0");
+      const etiquetaHora = `${fmt(cursor)} - ${fmt(fin)}`;
+
+      html += `<tr><td>${etiquetaHora}</td>`;
+      for (let j = 0; j < horario[i].length; j++) {
+        const asig = horario[i][j];
+        const clase = (asig === "RECREO") ? "recreo" : "";
+        html += `<td class="${clase}">${asig}</td>`;
+      }
+      html += "</tr>";
+
+      // Avance al siguiente tramo:
+      // - Si es recreo → siguiente empieza justo al acabar (sin +5).
+      // - Si es clase y la siguiente fila es recreo → tampoco +5 (recreo inicia al acabar la 3ª).
+      // - Si es clase normal y la siguiente también es clase → +5 de descanso.
+      const siguienteEsRecreo = (i + 1 < horario.length) && (horario[i+1][0] === "RECREO");
+      if (esRecreo || siguienteEsRecreo) {
+        cursor = new Date(fin);
+      } else {
+        cursor = new Date(fin);
+        cursor.setMinutes(cursor.getMinutes() + DESCANSO_NORMAL);
+      }
+    }
+
+    html += "</table>";
+    document.getElementById("horario").innerHTML = html;
+
+    // ✅ Verificación esperada:
+    // 1) 15:45–16:35, 2) 16:40–17:30, 3) 17:35–18:25,
+    // RECREO 18:25–18:40,
+    // 4) 18:40–19:30, 5) 19:35–20:25, 6) 20:30–21:20
+  </script>
+</body>
+</html>

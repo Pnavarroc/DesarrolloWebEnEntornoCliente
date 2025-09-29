@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 21 - Calculadora Sencilla</title>
+    <style>
+    .calc {
+      width: 200px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
+    }
+    button {
+      padding: 15px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>Ejercicio 22: Calculadora</h2>
+  <div class="calc">
+    <!-- Números -->
+    <button onclick="addDigit('7')">7</button>
+    <button onclick="addDigit('8')">8</button>
+    <button onclick="addDigit('9')">9</button>
+    <button onclick="setOperation('+')">+</button>
+
+    <button onclick="addDigit('4')">4</button>
+    <button onclick="addDigit('5')">5</button>
+    <button onclick="addDigit('6')">6</button>
+    <button onclick="setOperation('-')">-</button>
+
+    <button onclick="addDigit('1')">1</button>
+    <button onclick="addDigit('2')">2</button>
+    <button onclick="addDigit('3')">3</button>
+    <button onclick="setOperation('*')">*</button>
+
+    <button onclick="resetCalc()">C</button>
+    <button onclick="addDigit('0')">0</button>
+    <button onclick="calculate()">=</button>
+    <button onclick="setOperation('/')">/</button>
+  </div>
+
+  <script>
+    let firstNumber = "";
+    let secondNumber = "";
+    let operation = "";
+
+    function addDigit(digit) {
+      if (operation === "") {
+        firstNumber += digit;
+        alert(firstNumber); // mostramos el número construido
+      } else {
+        secondNumber += digit;
+        alert(firstNumber + " " + operation + " " + secondNumber);
+      }
+    }
+
+    function setOperation(op) {
+      if (firstNumber !== "") {
+        operation = op;
+        alert(firstNumber + " " + operation);
+      }
+    }
+
+    function calculate() {
+      if (firstNumber !== "" && operation !== "" && secondNumber !== "") {
+        let result = eval(firstNumber + operation + secondNumber);
+        alert(firstNumber + " " + operation + " " + secondNumber + " = " + result);
+        resetCalc(); // reiniciamos después de mostrar resultado
+      }
+    }
+
+    function resetCalc() {
+      firstNumber = "";
+      secondNumber = "";
+      operation = "";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ejercicio 5 - Calendario con festivos</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      margin: 20px auto;
+    }
+    th, td {
+      border: 1px solid #333;
+      width: 40px;
+      height: 40px;
+      text-align: center;
+    }
+    th {
+      background-color: #ddd;
+    }
+    .festivo {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>Ejercicio 5: Calendario con festivos</h2>
+  <div id="calendario"></div>
+
+  <script>
+    // Array de festivos de 2025 (indexado por mes: 0=enero ... 11=diciembre)
+    const festivos = [
+      [1,6], [], [], [17,18,23], [1], [], [], [15], [], [12], [1], [6,8,25]
+    ];
+
+    // Pedimos al usuario el mes (1-12)
+    let mes;
+    do {
+      mes = parseInt(prompt("Introduce un mes (1-12):"));
+    } while (isNaN(mes) || mes < 1 || mes > 12);
+
+    // Ajustamos a índice de array (0-11)
+    let mesIndex = mes - 1;
+
+    // Creamos objeto Date para obtener días del mes
+    let year = 2025;
+    let primerDia = new Date(year, mesIndex, 1); // 1er día del mes
+    let ultimoDia = new Date(year, mesIndex + 1, 0); // último día del mes
+    let totalDias = ultimoDia.getDate();
+
+    // Nombres de días y meses
+    const diasSemana = ["L", "M", "X", "J", "V", "S", "D"];
+    const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                   "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+    // Construimos tabla del calendario
+    let html = "<h3>" + meses[mesIndex] + " " + year + "</h3>";
+    html += "<table><tr>";
+    for (let d of diasSemana) {
+      html += "<th>" + d + "</th>";
+    }
+    html += "</tr><tr>";
+
+    // Ajuste: en JS getDay() devuelve 0=domingo ... 6=sábado
+    // Queremos que la semana empiece en Lunes → convertimos
+    let inicio = primerDia.getDay(); 
+    if (inicio === 0) inicio = 7; // domingo pasa a 7
+    for (let i = 1; i < inicio; i++) {
+      html += "<td></td>"; // huecos antes del día 1
+    }
+
+    // Rellenamos los días
+    for (let dia = 1; dia <= totalDias; dia++) {
+      let clase = festivos[mesIndex].includes(dia) ? "festivo" : "";
+      html += `<td class="${clase}">${dia}</td>`;
+
+      // Si es domingo, cerramos fila y empezamos otra
+      let diaSemana = new Date(year, mesIndex, dia).getDay();
+      if (diaSemana === 0) {
+        html += "</tr><tr>";
+      }
+    }
+
+    html += "</tr></table>";
+
+    // Insertamos en la página
+    document.getElementById("calendario").innerHTML = html;
+  </script>
+</body>
+</html>
