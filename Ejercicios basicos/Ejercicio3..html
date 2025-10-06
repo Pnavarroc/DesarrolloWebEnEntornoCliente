@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio3</title>
+</head>
+<body>
+
+<!--Crea un script que tenga definidas dos variables con datos numéricos. Pregunta al usuario la operación que 
+quiere realizar y en función de dicha operación
+ escribe en la página el resultado, indicando toda la operación. Impleméntalo con un if y luego con un Switch.-->
+    <script>
+        let num1 = prompt("Dime un numero: ");
+        let num2 =  prompt("Dime otro numero: ");
+        let operacion=prompt("Dime, ¿Qué operacion quieres hacer?: suma, resta, multiplicacion o division.")
+        let resultado;
+        switch (operacion){
+            case "suma":
+                resultado=num1+num2;
+                break;
+            case "resta":
+                resultado=num1-num2;
+                break;
+            case "multiplicacion":
+                resultado=num1*num2;
+                break;
+            case "division":
+                if(num2==0){
+                    resultado="El resultado va a dar error"
+                }else resultado=num1/num2;
+                
+                break;
+            default:
+                resultado="Operacion no valida."
+        }
+        document.write("El resultado es:"+resultado)
+
+    </script>
+
+</body>
+</html>

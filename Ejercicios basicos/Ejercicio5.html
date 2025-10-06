@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio5</title>
+</head>
+<body>
+    <script>
+        function factorial(num1){
+            let resultado=1;
+            for(var i=1; i<=num1; i++){
+                resultado*=i
+            }
+            return resultado
+        }
+        /*
+        Crea un script que dado un número que introducirá un usuario por pantalla, calcule su factorial.
+         Recuerda que el factorial
+         de un número es el producto de todos los números enteros desde 1 hasta dicho número*/
+
+        let num1 =Number(prompt("Dime un numero: ")) ;
+        document.write(`El factorial de ${num1} es ${factorial(num1)}`)
+    </script>
+</body>
+</html>

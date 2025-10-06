@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio9</title>
+</head>
+<body>
+    <script>
+        /*
+        Crea un script en el que el usuario si introduce (C3PO, R2, Vader o luck ) nos responda diciendo que
+         son personajes de Star Wars y si introduce cualquier otro nos responda que no son personajes de la película. Pista:
+         Los datos podrán ser introducidos tanto en minúsculas como en mayúsculas: miCadena.toUppercase(); */
+         let nombre = prompt("Dime un nombre: ").toLowerCase();
+         switch (nombre){
+            case "c3po":
+                document.write("Es un personaje de starWars");
+                break;
+            case "r2":
+                document.write("Es un personaje de starWars");
+                break;
+            case "vader":
+                document.write("Es un personaje de starWars");
+                break;
+            case "luck":
+                document.write("Es un personaje de starWars");
+                break;
+            default :
+            document.write(`Encantado de conocerte ${nombre}`);
+
+         }
+    </script>
+</body>
+</html>
